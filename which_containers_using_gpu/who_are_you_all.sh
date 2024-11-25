@@ -1,0 +1,1 @@
+watch -n 1 "bash -c 'N=${1:-8}; for i in \$(seq 0 \$((N-1))); do echo \"=== Output for GPU \$i ===\"; bash who_are_you.sh \$i; echo; done'"

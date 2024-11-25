@@ -1,0 +1,1 @@
+watch -n 1 'nvidia-smi --query-gpu=index,memory.used,memory.total,utilization.gpu --format=csv,noheader,nounits | awk -F, "{print \"GPU \" \$1 \": \" \$2 \" MiB / \" \$3 \" MiB, Utilization: \" \$4 \"%\"}"'
