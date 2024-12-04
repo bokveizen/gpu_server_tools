@@ -14,6 +14,8 @@ gpu_info=$(nvidia-smi -i $GPU_ID --query-compute-apps=pid,used_memory --format=c
 echo "$gpu_info" | while IFS=',' read -r pid memory; do
     containerd_shim_pid=$(pstree -sg $pid | grep -o 'containerd-shim([0-9]\+)' | grep -o '[0-9]\+')
 
+    echo $containerd_shim_pid
+
     if [ -z "$containerd_shim_pid" ]; then
         echo "cannot find containerd-shim pid"
         exit 1
@@ -27,16 +29,18 @@ echo "$gpu_info" | while IFS=',' read -r pid memory; do
     else
         echo "Process $containerd_shim_pid not found"
         continue
-    fi
+    fi    
 
     # if [ -z "$container_id" ]; then
     #     container_id=$(ps aux | grep $containerd_shim_pid | grep -oP '(?<=-workdir /var/lib/containerd/io.containerd.runtime.v1.linux/moby/)\w+')
     # fi
-    if ps aux | grep -q "$containerd_shim_pid" 2>/dev/null; then
-        container_id=$(ps aux | grep "$containerd_shim_pid" 2>/dev/null | grep -oP '(?<=-workdir /var/lib/containerd/io.containerd.runtime.v1.linux/moby/)\w+')
-    else
-        echo "Process $containerd_shim_pid not found"
-        continue
+    if [ -z "$container_id" ]; then
+        if ps aux | grep -q "$containerd_shim_pid" 2>/dev/null; then
+            container_id=$(ps aux | grep "$containerd_shim_pid" 2>/dev/null | grep -oP '(?<=-workdir /var/lib/containerd/io.containerd.runtime.v1.linux/moby/)\w+')
+        else
+            echo "Process $containerd_shim_pid not found"
+            continue
+        fi
     fi
 
     if [ -z "$container_id" ]; then
