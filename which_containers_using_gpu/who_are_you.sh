@@ -12,9 +12,7 @@ gpu_info=$(nvidia-smi -i $GPU_ID --query-compute-apps=pid,used_memory --format=c
 
 # for pid, memory in $gpu_info; do
 echo "$gpu_info" | while IFS=',' read -r pid memory; do
-    containerd_shim_pid=$(pstree -sg $pid | grep -o 'containerd-shim([0-9]\+)' | grep -o '[0-9]\+')
-
-    echo $containerd_shim_pid
+    containerd_shim_pid=$(pstree -sg $pid | grep -o 'containerd-shim([0-9]\+)' | grep -o '[0-9]\+')    
 
     if [ -z "$containerd_shim_pid" ]; then
         echo "cannot find containerd-shim pid"
