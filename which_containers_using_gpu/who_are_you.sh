@@ -10,9 +10,16 @@ GPU_ID=$1
 # gpu_pids=$(nvidia-smi -i $GPU_ID --query-compute-apps=pid --format=csv,noheader)
 gpu_info=$(nvidia-smi -i $GPU_ID --query-compute-apps=pid,used_memory --format=csv,noheader)
 
+# if not running any processes, exit
+if [ -z "$gpu_info" ]; then
+    echo "No processes running on GPU $GPU_ID"
+    exit 0
+fi
+
 # for pid, memory in $gpu_info; do
 echo "$gpu_info" | while IFS=',' read -r pid memory; do
-    containerd_shim_pid=$(pstree -sg $pid | grep -o 'containerd-shim([0-9]\+)' | grep -o '[0-9]\+')    
+    containerd_shim_pid=$(pstree -sg $pid | grep -o 'containerd-shim([0-9]\+)' | grep -o '[0-9]\+')
+
 
     if [ -z "$containerd_shim_pid" ]; then
         echo "cannot find containerd-shim pid"
