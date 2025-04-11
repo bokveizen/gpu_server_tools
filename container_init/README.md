@@ -36,7 +36,9 @@ Copy the public key to the remote machine
 ```shell
 mkdir -p ~/.ssh
 touch ~/.ssh/authorized_keys
+echo >> ~/.ssh/authorized_keys  # adds a line break
 echo {YOUR SSH PUBLIC KEY} >> ~/.ssh/authorized_keys;
+echo >> ~/.ssh/authorized_keys  # adds a line break
 ```
 
 For remote tunnels
