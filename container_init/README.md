@@ -45,11 +45,3 @@ echo {YOUR SSH PUBLIC KEY} >> ~/.ssh/authorized_keys
 echo >> ~/.ssh/authorized_keys  # adds a line break
 ```
 
-For remote tunnels
-
-```shell
-curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz
-# or specific version like https://update.code.visualstudio.com/1.97.2/cli-alpine-x64/stable
-tar -xf vscode_cli.tar.gz
-./code tunnel
-```
