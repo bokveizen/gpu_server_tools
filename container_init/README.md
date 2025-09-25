@@ -1,5 +1,6 @@
-Some useful steps for a clean new container:
+# Container Initialization
 
+Some useful steps for a clean new container:
 
 ```shell
 sed -i 's/archive.ubuntu.com/kr.archive.ubuntu.com/g' /etc/apt/sources.list  # for South Korea
@@ -16,7 +17,8 @@ apt-get install -y tmux
 ```
 
 For SSH connection
-```
+
+```shell
 apt-get install -y openssh-server
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config  # allow password for root login
 service ssh restart
@@ -28,11 +30,13 @@ echo -e '\n# conda initialize\n# !! Contents within this block are managed by 'c
 ```
 
 Generate public key on local PC
+
 ```shell
 ssh-keygen -t rsa
 ```
 
 Copy the public key to the remote machine
+
 ```shell
 mkdir -p ~/.ssh
 touch ~/.ssh/authorized_keys
@@ -42,6 +46,7 @@ echo >> ~/.ssh/authorized_keys  # adds a line break
 ```
 
 For remote tunnels
+
 ```shell
 curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz
 # or specific version like https://update.code.visualstudio.com/1.97.2/cli-alpine-x64/stable
