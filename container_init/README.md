@@ -16,6 +16,7 @@ apt-get install -y git
 apt-get install -y tmux
 apt-get install -y curl
 apt-get install -y wget
+apt-get install -y bubblewrap
 ```
 
 For GitHub CLI
@@ -78,6 +79,13 @@ npm -v
 codex --version
 ```
 
+For tmux
+
+```shell
+echo 'set -g mouse on' >> ~/.tmux.conf
+tmux source-file ~/.tmux.conf 2>/dev/null || true
+tmux set-option -g mouse on 2>/dev/null || true
+```
 
 For SSH connection
 
