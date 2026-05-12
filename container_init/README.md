@@ -87,6 +87,15 @@ tmux source-file ~/.tmux.conf 2>/dev/null || true
 tmux set-option -g mouse on 2>/dev/null || true
 ```
 
+For tunnel connection via vscode
+
+```shell
+curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz
+tar -xf vscode_cli.tar.gz
+./code tunnel
+```
+
+
 For SSH connection
 
 ```shell
