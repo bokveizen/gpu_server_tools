@@ -14,7 +14,70 @@ apt-get install -y vim
 apt-get install -y htop
 apt-get install -y git
 apt-get install -y tmux
+apt-get install -y curl
+apt-get install -y wget
 ```
+
+For GitHub CLI
+
+```shell
+(type -p wget >/dev/null || (apt update && apt install wget -y)) \
+  && mkdir -p -m 755 /etc/apt/keyrings \
+  && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  && cat $out | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+  && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+  && mkdir -p -m 755 /etc/apt/sources.list.d \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+  | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+  && apt update \
+  && apt install gh -y
+gh auth login
+```
+
+For Codex
+
+```shell
+set -e
+
+# Install basic dependencies when possible
+if command -v apt-get >/dev/null 2>&1; then
+  sudo apt-get update
+  sudo apt-get install -y curl ca-certificates git
+elif command -v dnf >/dev/null 2>&1; then
+  sudo dnf install -y curl ca-certificates git
+elif command -v yum >/dev/null 2>&1; then
+  sudo yum install -y curl ca-certificates git
+elif command -v pacman >/dev/null 2>&1; then
+  sudo pacman -Sy --needed curl ca-certificates git
+elif command -v zypper >/dev/null 2>&1; then
+  sudo zypper install -y curl ca-certificates git
+fi
+
+# Install nvm
+export NVM_DIR="$HOME/.nvm"
+
+if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+fi
+
+# Load nvm in this shell
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Install latest Node.js LTS, which includes npm
+nvm install --lts
+nvm alias default 'lts/*'
+nvm use default
+
+# Install OpenAI Codex CLI
+npm install -g @openai/codex@latest
+
+# Verify
+node -v
+npm -v
+codex --version
+```
+
 
 For SSH connection
 
